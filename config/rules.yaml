@@ -1,0 +1,89 @@
+# Data Quality & Anomaly Detection — rule configuration
+# Adjust thresholds without changing Python code.
+
+dataset:
+  key_fields:
+    - transaction_id
+    - user_id
+    - activity_date
+  id_fields:
+    - transaction_id
+    - user_id
+    - session_id
+  category_fields:
+    - activity_type
+    - platform
+    - region
+  date_fields:
+    - activity_date
+    - created_at
+  numeric_range:
+    score_pct:
+      min: 0
+      max: 100
+    tenure_days:
+      min: 0
+      max: null          # no upper bound
+    hours_logged:
+      min: 0
+      max: 24
+    test_duration_sec:
+      min: 0
+      max: 14400         # 4 hours
+    daily_logins:
+      min: 0
+      max: 500
+  anomaly_metrics:
+    - daily_logins
+    - test_duration_sec
+    - hours_logged
+    - score_pct
+
+standardization:
+  date_format_out: "%Y-%m-%d"          # ISO-8601 date
+  datetime_format_out: "%Y-%m-%dT%H:%M:%S"
+  category_maps:
+    activity_type:
+      login: LOGIN
+      log-in: LOGIN
+      log_in: LOGIN
+      assessment: ASSESSMENT
+      test: ASSESSMENT
+      quiz: ASSESSMENT
+      training: TRAINING
+      course: TRAINING
+      support: SUPPORT
+      ticket: SUPPORT
+    platform:
+      web: WEB
+      desktop: DESKTOP
+      mobile: MOBILE
+      ios: MOBILE
+      android: MOBILE
+      api: API
+    region:
+      na: NA
+      north america: NA
+      emea: EMEA
+      europe: EMEA
+      apac: APAC
+      asia: APAC
+      latam: LATAM
+
+anomaly:
+  zscore_threshold: 3.0
+  iqr_multiplier: 1.5
+  min_rows_for_stats: 10
+
+reconciliation:
+  # Expected daily record count band (inclusive). Override per run via CLI/env.
+  expected_count_min: null
+  expected_count_max: null
+  # Optional prior-day file path for day-over-day variance (set at runtime)
+  prior_day_tolerance_pct: 25.0
+
+reporting:
+  output_dir: outputs
+  excel_summary: discrepancy_summary.xlsx
+  exception_csv: exceptions.csv
+  clean_csv: clean_records.csv

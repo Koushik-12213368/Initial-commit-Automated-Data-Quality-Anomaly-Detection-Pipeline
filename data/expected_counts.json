@@ -1,0 +1,6 @@
+{
+  "run_date": "2026-10-27",
+  "expected_count_min": 25,
+  "expected_count_max": 40,
+  "notes": "Baseline band for daily activity dump volume"
+}
