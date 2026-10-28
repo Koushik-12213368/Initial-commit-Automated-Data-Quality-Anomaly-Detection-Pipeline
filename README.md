@@ -73,6 +73,30 @@ streamlit run dashboard/app.py
 - Filter by severity / error code / field
 - Expand the remediation catalog for ops playbooks
 
+## Hosting (public URL)
+
+### Quick public tunnel (this machine must stay on)
+
+With the dashboard already running on port 8501:
+
+```bash
+.\tools\cloudflared.exe tunnel --url http://localhost:8501
+```
+
+Cloudflare prints a public `https://*.trycloudflare.com` URL.
+
+### Always-on cloud (recommended)
+
+**Streamlit Community Cloud**
+1. Push this repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Deploy → pick the repo → Main file path: `dashboard/app.py`
+
+**Render**
+1. Push this repo to GitHub
+2. Connect at [render.com](https://render.com) using the included `render.yaml`
+3. Render sets `$PORT`; the start command is already configured
+
 ## Error codes (summary)
 
 | Code | Severity | Meaning |
